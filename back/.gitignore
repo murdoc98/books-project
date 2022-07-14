@@ -1,0 +1,7 @@
+data/
+test_db/
+dist/
+files/
+node_modules/
+package-lock.json
+.env

@@ -1,0 +1,40 @@
+import { Router } from 'express';
+import swaggerUI from 'swagger-ui-express';
+import swaggerJsdoc from 'swagger-jsdoc';
+
+const router = Router();
+
+// Swagger conf
+const options = {
+  definition: {
+    openapi: '3.0.0',
+    info: {
+      title: 'Book\'s project',
+      version: '1.0',
+      description:
+        'Api creada para la prueba tecnica',
+      license: {
+        name: 'MIT',
+        url: 'https://spdx.org/licenses/MIT.html'
+      },
+      contact: {
+        name: 'Murdoc\'s Project',
+        url: 'https://github.com/murdoc98'
+      }
+    },
+    servers: [
+      {
+        url: 'http://localhost:1025/api',
+        description: 'Development server'
+      },
+    ]
+  },
+  apis: ['./src/docs/*.yml']
+};
+const specs = swaggerJsdoc(options);
+router.use(
+  '/api-docs',
+  swaggerUI.serve,
+  swaggerUI.setup(specs, { explorer: true })
+);
+export default router;

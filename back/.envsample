@@ -1,0 +1,2 @@
+NODE_ENV=<prod, dev, qa>
+SERVER_PORT=<port>
