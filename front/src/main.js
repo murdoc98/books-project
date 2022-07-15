@@ -3,9 +3,7 @@ import App from './App.vue';
 import vuetify from './plugins/vuetify';
 import { loadFonts } from './plugins/webfontloader';
 import { createAuth0 } from '@auth0/auth0-vue';
-import dotenv from 'dotenv';
 
-dotenv.config();
 loadFonts();
 
 const app = createApp(App)
