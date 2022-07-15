@@ -1,16 +1,28 @@
 <template>
-  <img alt="Vue logo" src="./assets/logo.png">
-  <HelloWorld msg="Welcome to Your Vue.js App"/>
+<div>
+    <img alt="Vue logo" src="./assets/logo.png">
+  <button @click="loginWithRedirect">Log in</button>
+  <button @click="logout">Log out</button>
+  {{isAuthenticated}}
+</div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+import { useAuth0 } from '@auth0/auth0-vue';
 
 export default {
   name: 'App',
-  components: {
-    HelloWorld
-  }
+  components: {},
+  setup() {
+      const { loginWithRedirect, isAuthenticated, logout } = useAuth0();
+      return { 
+        // Data
+        isAuthenticated,
+        // Methods
+        loginWithRedirect,
+        logout
+       };
+    }
 }
 </script>
 
