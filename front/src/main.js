@@ -1,8 +1,15 @@
 import { createApp } from 'vue';
 import App from './App.vue';
+import vuetify from './plugins/vuetify';
+import { loadFonts } from './plugins/webfontloader';
 import { createAuth0 } from '@auth0/auth0-vue';
+import dotenv from 'dotenv';
 
-const app = createApp(App);
+dotenv.config();
+loadFonts();
+
+const app = createApp(App)
+  .use(vuetify)
 
 app.use(
   createAuth0({
@@ -13,4 +20,4 @@ app.use(
   })
 );
 
-app.mount('#app')
+app.mount('#app');
