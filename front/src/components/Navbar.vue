@@ -3,7 +3,6 @@
     <v-app-bar dense>
       <v-toolbar-title>Book's project</v-toolbar-title>
       <v-spacer></v-spacer>
-
       <v-btn
         :loading="loading3"
         :disabled="loading3"
@@ -38,7 +37,7 @@ export default {
     function login() {
       return loginWithRedirect({
         appState: {
-          target: '/protected',
+          target: "/protected",
         },
       });
     }
