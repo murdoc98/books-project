@@ -8,6 +8,7 @@
           class="mx-4 white--text"
           icon
           :href="e.url"
+          target="_blank"
         >
           <v-icon size="24px">
             {{ e.icon }}

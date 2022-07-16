@@ -1,11 +1,9 @@
 <template>
   <div>
     <v-app-bar dense>
-      <v-toolbar-title>Book's project</v-toolbar-title>
+      <v-toolbar-title><router-link :to="`/`">Book's project {{isAuthenticated}}</router-link></v-toolbar-title>
       <v-spacer></v-spacer>
       <v-btn
-        :loading="loading3"
-        :disabled="loading3"
         class="ma-2 white--text"
         @click="login"
         v-if="!isAuthenticated"
@@ -14,8 +12,14 @@
         &nbsp;Login
       </v-btn>
       <v-btn
-        :loading="loading3"
-        :disabled="loading3"
+        class="ma-2 white--text"
+        :to="`/protected`"
+        v-if="isAuthenticated"
+      >
+        <v-icon right dark> mdi-account-circle-outline </v-icon>
+        &nbsp;Profile
+      </v-btn>
+      <v-btn
         class="ma-2 white--text"
         @click="logout"
         v-if="isAuthenticated"
@@ -59,5 +63,10 @@ export default {
   padding: 5%;
   color: white;
   font-weight: bolder;
+}
+.v-toolbar-title a {
+  color: white;
+  text-decoration: none;
+  font-size: 1.4em;
 }
 </style>

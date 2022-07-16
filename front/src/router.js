@@ -1,21 +1,19 @@
 import { createWebHistory, createRouter } from "vue-router";
-import HelloWorld from "./views/HelloWorld.vue";
 import { authGuard } from "@auth0/auth0-vue";
+import Welcome from "./views/Welcome.vue";
+import Profile from "./views/Profile.vue";
 
 const routes = [
   {
     path: "/",
-    name: "Home",
-    component: HelloWorld,
-    meta: {
-      isPublic: true,
-    },
+    name: "Welcome",
+    component: Welcome,
   },
   {
     path: "/protected",
     name: "Profile",
     beforeEnter: authGuard,
-    component: HelloWorld,
+    component: Profile,
   },
   { path: "/:pathMatch(.*)*", redirect: "/" },
 ];
