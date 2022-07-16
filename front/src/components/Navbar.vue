@@ -8,7 +8,7 @@
         :loading="loading3"
         :disabled="loading3"
         class="ma-2 white--text"
-        @click="loginWithRedirect"
+        @click="login"
         v-if="!isAuthenticated"
       >
         <v-icon right dark> mdi-login </v-icon>
@@ -35,11 +35,18 @@ export default {
   components: {},
   setup() {
     const { loginWithRedirect, isAuthenticated, logout } = useAuth0();
+    function login() {
+      return loginWithRedirect({
+        appState: {
+          target: '/protected',
+        },
+      });
+    }
     return {
       // Data
       isAuthenticated,
       // Methods
-      loginWithRedirect,
+      login,
       logout,
     };
   },
