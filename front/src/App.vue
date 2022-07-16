@@ -2,7 +2,7 @@
   <v-app>
     <cNavbar/>
     <v-main>
-      <HelloWorld/>
+      <router-view></router-view>
     </v-main>
     <cFooter/>
   </v-app>
@@ -11,13 +11,11 @@
 <script>
 import cNavbar from './components/Navbar.vue';
 import cFooter from './components/Footer.vue';
-import HelloWorld from './components/HelloWorld.vue';
 
 export default {
   name: 'App',
 
   components: {
-    HelloWorld,
     cNavbar,
     cFooter
   },

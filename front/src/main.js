@@ -1,6 +1,7 @@
-import { createApp } from 'vue';
 import App from './App.vue';
+import router from './router';
 import vuetify from './plugins/vuetify';
+import { createApp } from 'vue';
 import { loadFonts } from './plugins/webfontloader';
 import { createAuth0 } from '@auth0/auth0-vue';
 
@@ -8,6 +9,7 @@ loadFonts();
 
 const app = createApp(App)
   .use(vuetify)
+  .use(router)
 
 app.use(
   createAuth0({
