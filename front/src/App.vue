@@ -1,22 +1,25 @@
 <template>
   <v-app>
-    <CustomNavbar/>
+    <cNavbar/>
     <v-main>
       <HelloWorld/>
     </v-main>
+    <cFooter/>
   </v-app>
 </template>
 
 <script>
-import CustomNavbar from './components/CustomNavbar.vue';
-import HelloWorld from './components/HelloWorld.vue'
+import cNavbar from './components/Navbar.vue';
+import cFooter from './components/Footer.vue';
+import HelloWorld from './components/HelloWorld.vue';
 
 export default {
   name: 'App',
 
   components: {
     HelloWorld,
-    CustomNavbar
+    cNavbar,
+    cFooter
   },
 
   data: () => ({
