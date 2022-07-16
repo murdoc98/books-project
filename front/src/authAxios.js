@@ -1,23 +1,23 @@
-import axios from 'axios';
+import axios from "axios";
 import { useAuth0 } from "@auth0/auth0-vue";
 
-const { getAccessTokenSilently } = useAuth0();
+export default function loadConfig() {
+  const { getAccessTokenSilently } = useAuth0();
 
-const instance = axios.create({
-  baseURL: 'localhost:1025',
-  timeout: 20000,
-});
-instance.interceptors.request.use(
-  config => {
-    const token = getAccessTokenSilently();
-    if(token) config.headers['Authorization'] = `Bearer ${token}`;
-  }, err => {
-    return Promise.reject(err);
-  }
-);
-instance.interceptors.response.use(
-  res => { return res; },
-  err => { console.log(err); }
-);
-
-export default instance;
+  const instance = axios.create({
+    baseURL: "http://localhost:1025/api",
+    timeout: 2000,
+  });
+  instance.interceptors.request.use(
+    (config) => {
+      getAccessTokenSilently().then((token) => {
+        config.headers["Authorization"] = `Bearer ${token}`;
+      });
+      return config;
+    },
+    (err) => {
+      return Promise.reject(err);
+    }
+  );
+  return instance;
+}

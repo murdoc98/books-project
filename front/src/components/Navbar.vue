@@ -1,34 +1,22 @@
 <template>
-  <div>
-    <v-app-bar dense>
-      <v-toolbar-title><router-link :to="`/`">Book's project {{isAuthenticated}}</router-link></v-toolbar-title>
-      <v-spacer></v-spacer>
-      <v-btn
-        class="ma-2 white--text"
-        @click="login"
-        v-if="!isAuthenticated"
-      >
-        <v-icon right dark> mdi-login </v-icon>
-        &nbsp;Login
-      </v-btn>
-      <v-btn
-        class="ma-2 white--text"
-        :to="`/protected`"
-        v-if="isAuthenticated"
-      >
-        <v-icon right dark> mdi-account-circle-outline </v-icon>
-        &nbsp;Profile
-      </v-btn>
-      <v-btn
-        class="ma-2 white--text"
-        @click="logout"
-        v-if="isAuthenticated"
-      >
-        <v-icon right dark> mdi-logout </v-icon>
-        &nbsp;Logout
-      </v-btn>
-    </v-app-bar>
-  </div>
+  <v-app-bar dense>
+    <v-toolbar-title
+      ><router-link :to="`/`">Book's project</router-link></v-toolbar-title
+    >
+    <v-spacer></v-spacer>
+    <v-btn class="ma-2 white--text" @click="login" v-if="!isAuthenticated">
+      <v-icon right dark> mdi-login </v-icon>
+      &nbsp;Login
+    </v-btn>
+    <v-btn class="ma-2 white--text" :to="`/protected`" v-if="isAuthenticated">
+      <v-icon right dark> mdi-account-circle-outline </v-icon>
+      &nbsp;Profile
+    </v-btn>
+    <v-btn class="ma-2 white--text" @click="logout" v-if="isAuthenticated">
+      <v-icon right dark> mdi-logout </v-icon>
+      &nbsp;Logout
+    </v-btn>
+  </v-app-bar>
 </template>
 <script>
 import { useAuth0 } from "@auth0/auth0-vue";
