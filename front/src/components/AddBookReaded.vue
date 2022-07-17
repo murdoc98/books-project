@@ -1,12 +1,9 @@
 <template>
-  <v-dialog v-model="isOpen" @click:outside="$emit('closeModal')">
+  <v-dialog v-model="isOpen" @click:outside="$emit('closeModal')" content-class="modal">
     <v-card>
       <v-card-title
         >Book readed<v-spacer />
-        <v-btn @click="$emit('closeModal')">
-          Cancelar&nbsp;
-          <v-icon> mdi-close-circle-outline </v-icon>
-        </v-btn></v-card-title
+        </v-card-title
       >
       <v-form ref="form" lazy-validation>
         <v-row> </v-row>

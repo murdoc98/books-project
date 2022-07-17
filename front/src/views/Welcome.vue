@@ -19,10 +19,12 @@
         <p class="subheading font-weight-regular">
           This is a technical test developed, developed to <a
             href="https://fpalpha.com/"
+            target="_blank"
           >FP Alpha</a>
           <br>If you want more info about the implementation reach me at
           <a
             href="https://github.com/murdoc98"
+            target="_blank"
           >Github</a>
         </p>
       </v-col>

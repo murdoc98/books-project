@@ -1,6 +1,6 @@
 <template>
   <v-container>
-    <h1>Welcome <span class="code">{{ state.id }}</span> reader!</h1>
+    <h1>Welcome reader #{{ state.id }}</h1>
     <div class="content">
       <div class="content-title">
         <h2>Books to read</h2>
@@ -72,7 +72,7 @@ export default {
     onMounted(async () => {
       const { _id, books_readed, books_to_read } =
         await privateAPI.getCurrentUser();
-      state.id = _id;
+      state.id = _id.substr(_id.length - 5);
       state.books_to_read = books_to_read;
       state.books_readed = books_readed;
     });
@@ -114,8 +114,5 @@ export default {
 span.clear {
   clear: left;
   display: block;
-}
-span.code {
-  font-family: monospace;
 }
 </style>
