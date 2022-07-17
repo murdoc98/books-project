@@ -9,7 +9,28 @@ const auth0 = auth({
 });
 
 router.get('/', auth0, (req: Request, res: Response) => {
+  console.log(req.auth.payload.sub)
   res.status(200).json('Ok');
+});
+
+// Protected routes
+router.get('/currentUser', auth0, (req: Request, res: Response) => {
+  res.send('Not implemented yet!');
+});
+router.post('/bookToRead', auth0, (req: Request, res: Response) => {
+  res.send('Not implemented yet');
+});
+router.put('/bookToRead/:id', auth0, (req: Request, res: Response) => {
+  res.send('Not implemented yet');
+});
+router.delete('/bookToRead/:id', auth0, (req: Request, res: Response) => {
+  res.send('Not implemented yet');
+});
+router.post('/bookreaded', auth0, (req: Request, res: Response) => {
+  res.send('Not implemented yet');
+});
+router.delete('/bookreaded/:id', auth0, (req: Request, res: Response) => {
+  res.send('Not implemented yet');
 });
 
 // Catch non implemented routes

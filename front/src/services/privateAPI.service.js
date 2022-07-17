@@ -7,7 +7,7 @@ export default class PrivateAPI {
 
   async getCurrentUser() {
     console.log(this.axios.defaults.baseURL);
-    const response = await this.axios.get('/');
+    const response = await this.axios.get('/currentUser');
     return response;
   }
 }
