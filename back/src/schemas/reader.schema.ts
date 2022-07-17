@@ -4,7 +4,7 @@ const { Schema } = mongoose;
 const readerSchema = mongoose.model(
   'reader',
   new Schema({
-    username: String,
+    _id: String,
     books_readed: [
       {
         external_id: String,
@@ -27,3 +27,5 @@ const readerSchema = mongoose.model(
     ]
   })
 );
+
+export default readerSchema;
