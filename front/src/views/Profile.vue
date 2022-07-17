@@ -1,12 +1,11 @@
 <template>
   <v-container>
-    <h1>Welcome {{ state.id }} reader! {{ currentModal }}</h1>
+    <h1>Welcome <span class="code">{{ state.id }}</span> reader!</h1>
     <div class="content">
       <div class="content-title">
         <h2>Books to read</h2>
-        <v-btn @click="currentModal = 'addBookToRead'">
+        <v-btn @click="currentModal = 'addBookToRead'" icon>
           <v-icon>mdi-plus-circle</v-icon>
-          &nbsp; Agregar
         </v-btn>
         <span class="clear"></span>
       </div>
@@ -20,9 +19,8 @@
     <div class="content">
       <div class="content-title">
         <h2>Books readed</h2>
-        <v-btn @click="currentModal = 'addBookReaded'">
+        <v-btn @click="currentModal = 'addBookReaded'" icon>
           <v-icon>mdi-plus-circle</v-icon>
-          &nbsp; Agregar
         </v-btn>
         <span class="clear"></span>
       </div>
@@ -97,8 +95,10 @@ export default {
   border-bottom: 1px solid #c0c0c0;
 }
 .content .content-title .v-btn {
-  background: #a80000;
-  color: white;
+  background: none;
+  color: #a80000;
+  box-shadow: none;
+  margin-top: -8px;
 }
 .non-content {
   text-align: center;
@@ -114,5 +114,8 @@ export default {
 span.clear {
   clear: left;
   display: block;
+}
+span.code {
+  font-family: monospace;
 }
 </style>
