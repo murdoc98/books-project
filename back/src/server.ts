@@ -24,8 +24,7 @@ export default function createServer(): express.Application {
     cors({
       methods: ['GET', 'PUT', 'POST', 'DELETE'],
       origin: '*',
-      allowedHeaders: ['Content-Type', 'session'],
-      exposedHeaders: ['Content-Type', 'Content-disposition', 'token']
+      allowedHeaders: ['Content-Type', 'Authorization'],
     })
   );
   app.use('/api', routes);

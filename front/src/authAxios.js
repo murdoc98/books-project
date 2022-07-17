@@ -9,10 +9,9 @@ export default function loadConfig() {
     timeout: 2000,
   });
   instance.interceptors.request.use(
-    (config) => {
-      getAccessTokenSilently().then((token) => {
-        config.headers["Authorization"] = `Bearer ${token}`;
-      });
+    async (config) => {
+      const token = await getAccessTokenSilently();
+      config.headers['Authorization'] = `Bearer ${token}`;
       return config;
     },
     (err) => {
