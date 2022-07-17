@@ -8,14 +8,14 @@ const auth0 = auth({
   issuerBaseURL: `https://dev-jb4f9d30.us.auth0.com/`,
 });
 
-router.get('/', auth0, (req: Request, res: Response) => {
-  console.log(req.auth.payload.sub)
+router.get('/', (req: Request, res: Response) => {
   res.status(200).json('Ok');
 });
 
 // Protected routes
 router.get('/currentUser', auth0, (req: Request, res: Response) => {
-  res.send('Not implemented yet!');
+  console.log(req.auth.payload.sub);
+  res.status(200).json({ id: req.auth.payload.sub });
 });
 router.post('/bookToRead', auth0, (req: Request, res: Response) => {
   res.send('Not implemented yet');
