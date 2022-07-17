@@ -5,16 +5,22 @@
       <v-card-title>Book to read<v-spacer /></v-card-title>
       <v-form ref="form" lazy-validation>
         <v-row>
-          <v-col cols="12">
+          <v-col cols="9">
             <v-text-field
-              label="Nombre"
+              label="Name of the book"
             ></v-text-field>
+          </v-col>
+          <v-col cols="3">
+           <v-btn>
+          Search&nbsp;
+          <v-icon> mdi-search-web</v-icon>
+        </v-btn>
           </v-col>
            </v-row>
       </v-form>
       <v-card-actions>
         <v-spacer></v-spacer>
-        <v-btn class="custom-button" id="update">
+        <v-btn>
           Guardar&nbsp;
           <v-icon> mdi-arrow-down-thin-circle-outline </v-icon>
         </v-btn>
@@ -48,6 +54,9 @@ export default {
 .modal {
   width: 30%;
 }
+.modal .v-card {
+  margin-top: -20%;
+}
 .modal .v-card-title {
   background: #730000;
   color: white;
@@ -58,5 +67,8 @@ export default {
 .modal .v-btn {
   background: #730000;
   color: white;
+}
+.v-col .v-btn {
+  margin-top: 10px;
 }
 </style>

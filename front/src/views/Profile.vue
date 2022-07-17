@@ -1,36 +1,54 @@
 <template>
   <v-container>
     <h1>Welcome reader #{{ state.id }}</h1>
-    <div class="content">
-      <div class="content-title">
-        <h2>Books to read</h2>
-        <v-btn @click="currentModal = 'addBookToRead'" icon>
-          <v-icon>mdi-plus-circle</v-icon>
-        </v-btn>
-        <span class="clear"></span>
-      </div>
-      <div class="content-body">
-        <p v-if="state.books_to_read.length == 0" class="non-content">
-          You don't have books to read!
-        </p>
-        <div v-else>Show books to read</div>
-      </div>
-    </div>
-    <div class="content">
-      <div class="content-title">
-        <h2>Books readed</h2>
-        <v-btn @click="currentModal = 'addBookReaded'" icon>
-          <v-icon>mdi-plus-circle</v-icon>
-        </v-btn>
-        <span class="clear"></span>
-      </div>
-      <div class="content-body">
-        <p v-if="state.books_readed.length == 0" class="non-content">
-          You don't have books readed!
-        </p>
-        <div v-else>Show books to read</div>
-      </div>
-    </div>
+    <v-row>
+      <v-col cols="9">
+        <div class="content">
+          <div class="content-title">
+            <h2>Readed</h2>
+            <v-btn @click="currentModal = 'addBookReaded'" icon>
+              <v-icon>mdi-plus-circle</v-icon>
+            </v-btn>
+            <span class="clear"></span>
+          </div>
+          <div class="content-body">
+            <p v-if="state.books_readed.length == 0" class="non-content">
+              You don't have books readed!
+            </p>
+            <div v-else>Show books to read</div>
+          </div>
+        </div>
+      </v-col>
+      <v-col cols="3">
+        <div class="content">
+          <div class="content-title">
+            <h2>My stats</h2>
+            <span class="clear"></span>
+          </div>
+          <div class="content-body">
+            <p v-if="state.books_readed.length == 0" class="non-content">
+              You don't have books readed!
+            </p>
+            <div v-else>Show books to read</div>
+          </div>
+        </div>
+        <div class="content">
+          <div class="content-title">
+            <h2>To read</h2>
+            <v-btn @click="currentModal = 'addBookToRead'" icon>
+              <v-icon>mdi-plus-circle</v-icon>
+            </v-btn>
+            <span class="clear"></span>
+          </div>
+          <div class="content-body">
+            <p v-if="state.books_to_read.length == 0" class="non-content">
+              You don't have books to read!
+            </p>
+            <div v-else>Show books to read</div>
+          </div>
+        </div>
+      </v-col>
+    </v-row>
     <AddBookToRead
       :currentModal="currentModal"
       @closeModal="closeModal"
@@ -48,7 +66,7 @@ import PrivateAPI from "../services/privateAPI.service";
 
 // Components
 import AddBookReaded from "../components/AddBookReaded.vue";
-import AddBookToRead from '../components/AddBookToRead.vue';
+import AddBookToRead from "../components/AddBookToRead.vue";
 
 export default {
   name: "cProfile",
@@ -58,7 +76,7 @@ export default {
   },
   methods: {
     closeModal() {
-      this.currentModal = 'disabled';
+      this.currentModal = "disabled";
     },
   },
   setup() {
