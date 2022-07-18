@@ -3,6 +3,8 @@ import { auth } from 'express-oauth2-jwt-bearer';
 
 // Controllers
 import getUser from './controllers/getUser.controller';
+import postBookToRead from './controllers/postBookToRead.controller';
+import deleteBookToRead from './controllers/deleteBookToRead.controller';
 
 const router = Router();
 
@@ -17,15 +19,8 @@ router.get('/', (req: Request, res: Response) => {
 
 // Protected routes
 router.get('/currentUser', auth0, getUser);
-router.post('/bookToRead', auth0, (req: Request, res: Response) => {
-  res.send('Not implemented yet');
-});
-router.put('/bookToRead/:id', auth0, (req: Request, res: Response) => {
-  res.send('Not implemented yet');
-});
-router.delete('/bookToRead/:id', auth0, (req: Request, res: Response) => {
-  res.send('Not implemented yet');
-});
+router.post('/bookToRead', auth0, postBookToRead);
+router.delete('/bookToRead/:id', auth0, deleteBookToRead);
 router.post('/bookreaded', auth0, (req: Request, res: Response) => {
   res.send('Not implemented yet');
 });

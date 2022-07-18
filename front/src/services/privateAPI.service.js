@@ -14,4 +14,9 @@ export default class PrivateAPI {
     const response = await this.axios.post('/bookToRead', book);
     return response.data;
   }
+  async deleteBTR(book) {
+    console.log(book);
+    const response = await this.axios.delete(`/bookToRead/${book._id}`);
+    return response.data;
+  }
 }

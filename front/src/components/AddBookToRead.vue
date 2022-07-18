@@ -62,7 +62,7 @@ export default {
   props: {
     currentModal: { type: String, required: false },
   },
-  setup(props) {
+  setup(props, { emit }) {
     const privateAPI = new PrivateAPI();
     const isOpen = ref(false);
     const searchText = ref("");
@@ -95,8 +95,9 @@ export default {
       return docs;
     };
     const postBTR = async(book) => {
-      const res = await privateAPI.postBTR(book);
-      console.log(res);
+      await privateAPI.postBTR(book);
+      emit('reloadUser');
+      emit('closeModal');
     }
     return {
       isOpen,

@@ -1,5 +1,4 @@
 import { Request, Response } from 'express';
-import mongoose from 'mongoose';
 import Reader from '../schemas/reader.schema';
 
 const _ = async (req: Request, res: Response) => {

@@ -44,7 +44,26 @@
             <p v-if="state.books_to_read.length == 0" class="non-content">
               You don't have books to read!
             </p>
-            <div v-else>Show books to read</div>
+            <div v-else>
+              <v-table class="content-table">
+                <thead>
+                  <tr>
+                    <th class="text-center">Title</th>
+                    <th class="text-center">Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr v-for="item in state.books_to_read" :key="item.name">
+                    <td style="width: 70%">{{ item.name }}</td>
+                    <td class="text-center">
+                      <v-btn @click="deleteBTR(item)" icon>
+                        <v-icon> mdi-delete-circle-outline</v-icon>
+                      </v-btn>
+                    </td>
+                  </tr>
+                </tbody>
+              </v-table>
+            </div>
           </div>
         </div>
       </v-col>
@@ -52,10 +71,12 @@
     <AddBookToRead
       :currentModal="currentModal"
       @closeModal="closeModal"
+      @reloadUser="reloadUser"
     ></AddBookToRead>
     <AddBookReaded
       :currentModal="currentModal"
       @closeModal="closeModal"
+      @reloadUser="reloadUser"
     ></AddBookReaded>
   </v-container>
 </template>
@@ -82,21 +103,30 @@ export default {
   setup() {
     const privateAPI = new PrivateAPI();
     const currentModal = ref("disabled");
+    const deleteBTR = async (item) => {
+      const response = await privateAPI.deleteBTR(item)
+      console.log(response);
+      await reloadUser();
+    };
+    const reloadUser = async() => {
+      const { _id, books_readed, books_to_read } = await privateAPI.getCurrentUser();
+      state.id = _id.substr(_id.length - 5);
+      state.books_to_read = books_to_read;
+      state.books_readed = books_readed;
+    };
     const state = reactive({
       id: undefined,
       books_to_read: [],
       books_readed: [],
     });
     onMounted(async () => {
-      const { _id, books_readed, books_to_read } =
-        await privateAPI.getCurrentUser();
-      state.id = _id.substr(_id.length - 5);
-      state.books_to_read = books_to_read;
-      state.books_readed = books_readed;
+      await reloadUser();
     });
     return {
       state,
       currentModal,
+      deleteBTR,
+      reloadUser
     };
   },
 };
@@ -132,5 +162,17 @@ export default {
 span.clear {
   clear: left;
   display: block;
+}
+.content-table {
+  border-bottom-left-radius: 5px;
+  border-bottom-right-radius: 5px;
+}
+.content-table .v-btn {
+  background: none;
+  color: #a80000;
+  box-shadow: none;
+}
+.content-table tr:hover {
+  background-color: transparent !important;
 }
 </style>
