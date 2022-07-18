@@ -5,6 +5,8 @@ import { auth } from 'express-oauth2-jwt-bearer';
 import getUser from './controllers/getUser.controller';
 import postBookToRead from './controllers/postBookToRead.controller';
 import deleteBookToRead from './controllers/deleteBookToRead.controller';
+import postBookReaded from './controllers/postBookReaded.controller';
+import deleteBookReaded from './controllers/deleteBookReaded.controller';
 
 const router = Router();
 
@@ -21,12 +23,8 @@ router.get('/', (req: Request, res: Response) => {
 router.get('/currentUser', auth0, getUser);
 router.post('/bookToRead', auth0, postBookToRead);
 router.delete('/bookToRead/:id', auth0, deleteBookToRead);
-router.post('/bookreaded', auth0, (req: Request, res: Response) => {
-  res.send('Not implemented yet');
-});
-router.delete('/bookreaded/:id', auth0, (req: Request, res: Response) => {
-  res.send('Not implemented yet');
-});
+router.post('/bookreaded', auth0, postBookReaded);
+router.delete('/bookreaded/:id', auth0, deleteBookReaded);
 
 // Catch non implemented routes
 router.all('*', (req: Request, res: Response) => {

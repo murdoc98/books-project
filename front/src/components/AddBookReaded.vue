@@ -104,8 +104,10 @@
                 <v-col cols="4">
                   <v-select
                     :items="items"
+                    v-model="state.book.score"
                     label="Score"
                     hide-details="auto"
+                    return-object
                   ></v-select>
                 </v-col>
                 <v-col cols="2">
@@ -134,12 +136,10 @@
                   ></v-textarea>
                 </v-col>
                 <v-col cols="12">
-                  <v-btn
-              block
-            >
-              Save&nbsp;
-              <v-icon>mdi-content-save-outline</v-icon>
-            </v-btn>
+                  <v-btn block @click="postBR()">
+                    Save&nbsp;
+                    <v-icon>mdi-content-save-outline</v-icon>
+                  </v-btn>
                 </v-col>
               </v-row>
             </v-form>
@@ -154,15 +154,15 @@ import { ref, toRefs, reactive } from "vue";
 import axios from "axios";
 import Datepicker from "@vuepic/vue-datepicker";
 import "@vuepic/vue-datepicker/dist/main.css";
-// import PrivateAPI from '../services/privateAPI.service';
+import PrivateAPI from '../services/privateAPI.service';
 export default {
   name: "cAddBookReaded",
   components: { Datepicker },
   props: {
     currentModal: { type: String, required: false },
   },
-  setup(props /*{ emit }*/) {
-    //const privateAPI = new PrivateAPI();
+  setup(props, { emit }) {
+    const privateAPI = new PrivateAPI();
     const items = ["Really good", "Good", "Meh", "Bad", "Really bad"];
     const isOpen = ref(false);
     const searchText = ref("");
@@ -174,10 +174,11 @@ export default {
         name: "",
         pages: 0,
         year: 0,
+        score: "",
         publisher: "",
         startDate: null,
         endDate: null,
-        review: ''
+        review: "",
       },
     });
     const { currentModal: modal } = toRefs(props);
@@ -207,8 +208,8 @@ export default {
     const getItem = (book) => {
       state.selectedItem = true;
       state.book.name = book.title;
-      state.book.pages = book.number_of_pages_median;
-      state.book.year = book.first_publish_year;
+      state.book.pages = book.number_of_pages_median || 0;
+      state.book.year = book.first_publish_year || 2005;
       state.book.publisher = book.publisher;
     };
     const clear = () => {
@@ -218,6 +219,16 @@ export default {
       state.book.year = 0;
       state.book.publisher = "";
     };
+    const postBR = async() => {
+      if(state.book.score == 'Really good') state.book.score = 5;
+      else if(state.book.score == 'Good') state.book.score = 4;
+      else if(state.book.score == 'Meh') state.book.score = 3;
+      else if(state.book.score == 'Bad') state.book.score = 2;
+      else state.book.score = 1;
+      await privateAPI.postBR(state.book);
+      emit('reloadUser');
+      emit('closeModal');
+    }
     return {
       isOpen,
       modal,
@@ -228,6 +239,7 @@ export default {
       getItem,
       clear,
       items,
+      postBR
     };
   },
   watch: {

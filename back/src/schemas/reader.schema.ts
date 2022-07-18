@@ -9,13 +9,13 @@ const readerSchema = mongoose.model(
       {
         external_id: String,
         name: String,
-        startDate: { type: Date },
-        endDate: { type: Date },
-        score: { type: Number, min: 1, max: 5, required: true },
+        startDate: Date,
+        endDate: Date,
+        score: { type: Number, min: 1, max: 5 },
         review: String,
         author: String,
         totalPages: String,
-        publishYear: Date,
+        publishYear: Number,
         publisher: String
       }
     ],

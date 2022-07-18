@@ -15,7 +15,32 @@
             <p v-if="state.books_readed.length == 0" class="non-content">
               You don't have books readed!
             </p>
-            <div v-else>Show books to read</div>
+            <div v-else>
+              <v-row>
+                <v-col cols='6' v-for="item in state.books_readed" :key="item.id">
+                  <v-card >
+                <v-card-text>
+                  <div>Rating: {{item.score}}/5</div>
+                  <p class="text-h4 text--primary">{{item.name}}</p>
+                  <p><b>Publisher: </b>{{item.publisher}}, <b>publish year: </b>{{item.publishYear}}, <b>total pages: </b>{{item.totalPages}}</p>
+                  <p><b>Start date: </b>{{new Date(item.startDate).toLocaleDateString("en-US")}}, <b>end date: </b>{{new Date(item.endDate).toLocaleDateString("en-US")}}</p>
+                  <div class="text--primary">
+                    <b>Review: </b>{{item.review}}
+                  </div>
+                </v-card-text>
+                <v-card-actions>
+                  <v-spacer></v-spacer>
+                  <v-btn @click="deleteBR(item)" icon>
+                        <v-icon> mdi-delete-circle-outline</v-icon>
+                      </v-btn>
+                    <v-btn @click="deleteBR(item)" icon>
+                        <v-icon> mdi-update</v-icon>
+                      </v-btn>
+                </v-card-actions>
+              </v-card>
+                </v-col>
+              </v-row>
+            </div>
           </div>
         </div>
       </v-col>
@@ -26,10 +51,10 @@
             <span class="clear"></span>
           </div>
           <div class="content-body">
-            <p v-if="state.books_readed.length == 0" class="non-content">
-              You don't have books readed!
-            </p>
-            <div v-else>Show books to read</div>
+            <p><b>Books readed: </b>{{state.books_readed.length}}</p>
+            <p><b>Books to read: </b>{{state.books_to_read.length}}</p>
+            <p><b>Av. rating: </b>{{state.rating}}</p>
+            <p><b>Pages read: </b>{{state.pages_read}}</p>
           </div>
         </div>
         <div class="content">
@@ -104,20 +129,31 @@ export default {
     const privateAPI = new PrivateAPI();
     const currentModal = ref("disabled");
     const deleteBTR = async (item) => {
-      const response = await privateAPI.deleteBTR(item)
-      console.log(response);
+      await privateAPI.deleteBTR(item);
       await reloadUser();
     };
-    const reloadUser = async() => {
-      const { _id, books_readed, books_to_read } = await privateAPI.getCurrentUser();
+    const deleteBR = async(item) => {
+      await privateAPI.deleteBR(item);
+      await reloadUser();
+    }
+    const reloadUser = async () => {
+      const { _id, books_readed, books_to_read } =
+        await privateAPI.getCurrentUser();
       state.id = _id.substr(_id.length - 5);
       state.books_to_read = books_to_read;
       state.books_readed = books_readed;
+      console.log(books_readed);
+      if(books_readed.lenght == 0) state.rating = 0;
+      else state.rating = (books_readed.reduce((a, b) => a + b.score, 0) / books_readed.length).toFixed(1);
+      state.pages_read = books_readed.reduce((a, b) => a + parseInt(b.totalPages), 0);
+
     };
     const state = reactive({
       id: undefined,
       books_to_read: [],
       books_readed: [],
+      rating: 0,
+      pages_read: 0
     });
     onMounted(async () => {
       await reloadUser();
@@ -126,7 +162,8 @@ export default {
       state,
       currentModal,
       deleteBTR,
-      reloadUser
+      deleteBR,
+      reloadUser,
     };
   },
 };
@@ -174,5 +211,11 @@ span.clear {
 }
 .content-table tr:hover {
   background-color: transparent !important;
+}
+.content-body i {
+  color: #a80000;
+}
+.content-body .v-row {
+  padding: 0;
 }
 </style>

@@ -17,15 +17,14 @@
       </v-card-text>
 
       <v-card-text class="white--text pt-0">
-        <b>Disclaimer: </b>The information contained in this website is for
-        general information purposes only. The information is provided by
-        [Website Name], a property of [Business Name]. While we endeavour to
-        keep the information up to date and correct, we make no representations
-        or warranties of any kind, express or implied, about the completeness,
-        accuracy, reliability, suitability or availability with respect to the
-        website or the information, products, services, or related graphics
-        contained on the website for any purpose. Any reliance you place on such
-        information is therefore strictly at your own risk.
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin congue
+        eros vitae purus tincidunt commodo. Mauris in nulla a quam dignissim
+        laoreet consequat vitae libero. In hac habitasse platea dictumst.
+        Phasellus eget congue augue, quis ornare turpis. Etiam tristique
+        tincidunt arcu, elementum convallis eros mattis ut. Cras venenatis,
+        neque eget rhoncus molestie, lacus enim efficitur libero, nec vehicula
+        velit mi sit amet nulla. Proin tincidunt magna quis odio mollis,
+        fermentum tempor nulla elementum.
       </v-card-text>
 
       <v-divider></v-divider>

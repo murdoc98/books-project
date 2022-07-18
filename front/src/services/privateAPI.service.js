@@ -19,7 +19,11 @@ export default class PrivateAPI {
     return response.data;
   }
   async postBR(book) {
-    console.log(book);
-    throw Error('Not implemented yet');
+    const response = await this.axios.post('/bookreaded', book);
+    return response.data;
+  }
+  async deleteBR(book) {
+    const response = await this.axios.delete(`/bookreaded/${book._id}`);
+    return response.data;
   }
 }
