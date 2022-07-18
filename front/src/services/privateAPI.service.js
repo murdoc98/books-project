@@ -9,4 +9,9 @@ export default class PrivateAPI {
     const response = await this.axios.get('/currentUser');
     return response.data;
   }
+  async postBTR(book) {
+    console.log(book);
+    const response = await this.axios.post('/bookToRead', book);
+    return response.data;
+  }
 }
