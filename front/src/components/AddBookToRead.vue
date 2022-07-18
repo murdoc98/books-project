@@ -22,8 +22,8 @@
               <v-icon> mdi-search-web</v-icon>
             </v-btn>
           </v-col>
-          <v-col cols="12">
-            <v-table v-if="searchLength > 0">
+          <v-col cols="12" v-if="searchLength > 0">
+            <v-table>
               <thead>
                 <tr>
                   <th class="text-center">Title</th>
@@ -65,7 +65,7 @@ export default {
   setup(props, { emit }) {
     const privateAPI = new PrivateAPI();
     const isOpen = ref(false);
-    const searchText = ref("");
+    const searchText = ref('');
     const searchLength = ref(0);
     const state = reactive({
       response: [],
@@ -89,7 +89,7 @@ export default {
         if(!book.author_name) book.author_name = ['None'];
         if(!book.publisher) book.publisher = ['None'];
         book.author_name = book.author_name.slice(0, 1);
-        book.publisher = book.publisher.slice(0, 1)
+        book.publisher = book.publisher.slice(0, 1);
       });
       searchLength.value = docs.length;
       return docs;
@@ -112,6 +112,9 @@ export default {
   watch: {
     modal(value) {
       this.isOpen = value == "addBookToRead";
+      this.state.response = [];
+      this.searchText = '';
+      this.searchLength = 0;
     },
   },
 };
@@ -121,8 +124,8 @@ export default {
   width: 60%;
 }
 #form {
+  overflow: hidden;
   min-height: 200px;
-  overflow-y: hidden;
 }
 .modal .v-card-title {
   background: #730000;
@@ -146,5 +149,7 @@ export default {
 }
 .v-table td{
   height: 40px;
+}
+.v-dialog {
 }
 </style>

@@ -15,8 +15,11 @@ export default class PrivateAPI {
     return response.data;
   }
   async deleteBTR(book) {
-    console.log(book);
     const response = await this.axios.delete(`/bookToRead/${book._id}`);
     return response.data;
+  }
+  async postBR(book) {
+    console.log(book);
+    throw Error('Not implemented yet');
   }
 }

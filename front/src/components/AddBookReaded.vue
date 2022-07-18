@@ -1,42 +1,262 @@
 <template>
-  <v-dialog v-model="isOpen" @click:outside="$emit('closeModal')" content-class="modal">
-    <v-card>
+  <v-dialog v-model="isOpen" persistent content-class="modal">
+    <v-card id="book-readed">
       <v-card-title
-        >Book readed<v-spacer />
-        </v-card-title
+        ><p>Book readed</p>
+        <v-btn icon @click="$emit('closeModal')" x-small>
+          <v-icon> mdi-close-circle-outline</v-icon>
+        </v-btn></v-card-title
       >
-      <v-form ref="form" lazy-validation>
-        <v-row> </v-row>
-      </v-form>
-      <v-card-actions>
-        <v-spacer></v-spacer>
-        <v-btn class="custom-button" id="update">
-          Guardar&nbsp;
-          <v-icon> mdi-arrow-down-thin-circle-outline </v-icon>
-        </v-btn>
-      </v-card-actions>
+      <v-card-text>
+        <v-row>
+          <v-col cols="9">
+            <v-text-field
+              v-on:keyup.enter="search"
+              v-model="searchText"
+              label="Name of the book"
+              hide-details="auto"
+              :disabled="state.selectedItem"
+            ></v-text-field>
+          </v-col>
+          <v-col cols="3">
+            <v-btn
+              @click="search"
+              block
+              id="search-bar"
+              v-if="!state.selectedItem"
+            >
+              Search&nbsp;
+              <v-icon> mdi-search-web</v-icon>
+            </v-btn>
+            <v-btn
+              @click="clear"
+              block
+              id="search-bar"
+              v-if="state.selectedItem"
+            >
+              Clear&nbsp;
+              <v-icon> mdi-autorenew</v-icon>
+            </v-btn>
+          </v-col>
+          <v-col cols="12" v-if="searchLength > 0 && !state.selectedItem">
+            <v-table>
+              <thead>
+                <tr>
+                  <th class="text-center">Title</th>
+                  <th class="text-center">Author</th>
+                  <th class="text-center">Publisher</th>
+                  <th class="text-center">Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr v-for="item in state.response" :key="item.title">
+                  <td>{{ item.title }}</td>
+                  <td>{{ item.author_name }}</td>
+                  <td>{{ item.publisher }}</td>
+                  <td>
+                    <v-btn @click="getItem(item)" size="small" block>
+                      Select&nbsp;
+                      <v-icon> mdi-search-web</v-icon>
+                    </v-btn>
+                  </td>
+                </tr>
+              </tbody>
+            </v-table>
+          </v-col>
+          <v-col cols="12">
+            <v-form v-if="state.selectedItem">
+              <v-row>
+                <v-col cols="12">
+                  <h2>Complete the data</h2>
+                </v-col>
+                <v-col cols="6">
+                  <v-text-field
+                    v-model="state.book.name"
+                    label="Complete title"
+                    :disabled="true"
+                    hide-details="auto"
+                  ></v-text-field>
+                </v-col>
+                <v-col cols="6">
+                  <v-text-field
+                    v-model="state.book.publisher"
+                    label="Publisher"
+                    :disabled="true"
+                    hide-details="auto"
+                  ></v-text-field>
+                </v-col>
+                <v-col cols="4">
+                  <v-text-field
+                    v-model="state.book.pages"
+                    label="Number of pages"
+                    :disabled="true"
+                    hide-details="auto"
+                  ></v-text-field>
+                </v-col>
+                <v-col cols="4">
+                  <v-text-field
+                    v-model="state.book.year"
+                    label="First publish year"
+                    :disabled="true"
+                    hide-details="auto"
+                  ></v-text-field>
+                </v-col>
+                <v-col cols="4">
+                  <v-select
+                    :items="items"
+                    label="Score"
+                    hide-details="auto"
+                  ></v-select>
+                </v-col>
+                <v-col cols="2">
+                  <p class="custom-label">Start date:</p>
+                </v-col>
+                <v-col cols="3">
+                  <Datepicker
+                    v-model="state.book.startDate"
+                    @submit.prevent
+                  ></Datepicker>
+                </v-col>
+                <v-col cols="2">
+                  <p class="custom-label">End date:</p>
+                </v-col>
+                <v-col cols="3">
+                  <Datepicker
+                    v-model="state.book.endDate"
+                    @submit.prevent
+                  ></Datepicker>
+                </v-col>
+                <v-col cols="12">
+                  <v-textarea
+                    label="Type here your book's review"
+                    v-model="state.book.review"
+                    hide-details="auto"
+                  ></v-textarea>
+                </v-col>
+                <v-col cols="12">
+                  <v-btn
+              block
+            >
+              Save&nbsp;
+              <v-icon>mdi-content-save-outline</v-icon>
+            </v-btn>
+                </v-col>
+              </v-row>
+            </v-form>
+          </v-col>
+        </v-row>
+      </v-card-text>
     </v-card>
   </v-dialog>
 </template>
 <script>
-import { ref, toRefs } from "vue";
+import { ref, toRefs, reactive } from "vue";
+import axios from "axios";
+import Datepicker from "@vuepic/vue-datepicker";
+import "@vuepic/vue-datepicker/dist/main.css";
+// import PrivateAPI from '../services/privateAPI.service';
 export default {
   name: "cAddBookReaded",
+  components: { Datepicker },
   props: {
-    currentModal: { type: String, required: false }
+    currentModal: { type: String, required: false },
   },
-  setup(props) {
+  setup(props /*{ emit }*/) {
+    //const privateAPI = new PrivateAPI();
+    const items = ["Really good", "Good", "Meh", "Bad", "Really bad"];
     const isOpen = ref(false);
+    const searchText = ref("");
+    const searchLength = ref(0);
+    const state = reactive({
+      response: [],
+      selectedItem: false,
+      book: {
+        name: "",
+        pages: 0,
+        year: 0,
+        publisher: "",
+        startDate: null,
+        endDate: null,
+        review: ''
+      },
+    });
     const { currentModal: modal } = toRefs(props);
+    const search = async () => {
+      const title = searchText.value.toLowerCase().replace(/ /g, "+");
+      state.response = await getBooks(title);
+    };
+    const getBooks = async (bookName) => {
+      const url = `https://openlibrary.org/search.json?q=${bookName}`;
+      const {
+        data: { docs },
+      } = await axios.get(url, {
+        params: {
+          mode: "eboks",
+          limit: 10,
+        },
+      });
+      docs.forEach((book) => {
+        if (!book.author_name) book.author_name = ["None"];
+        if (!book.publisher) book.publisher = ["None"];
+        book.author_name = book.author_name.slice(0, 1).join(", ");
+        book.publisher = book.publisher.slice(0, 1).join(", ");
+      });
+      searchLength.value = docs.length;
+      return docs;
+    };
+    const getItem = (book) => {
+      state.selectedItem = true;
+      state.book.name = book.title;
+      state.book.pages = book.number_of_pages_median;
+      state.book.year = book.first_publish_year;
+      state.book.publisher = book.publisher;
+    };
+    const clear = () => {
+      state.selectedItem = false;
+      state.book.name = "";
+      state.book.pages = 0;
+      state.book.year = 0;
+      state.book.publisher = "";
+    };
     return {
       isOpen,
-      modal
+      modal,
+      search,
+      searchText,
+      searchLength,
+      state,
+      getItem,
+      clear,
+      items,
     };
   },
   watch: {
     modal(value) {
       this.isOpen = value == "addBookReaded";
+      this.state.response = [];
+      this.searchText = "";
+      this.searchLength = 0;
     },
   },
 };
 </script>
+<style scoped>
+#book-readed {
+  overflow-y: hidden;
+}
+#book-readed .v-card-title p {
+  float: left;
+}
+#book-readed .v-card-title .v-btn {
+  float: right;
+  background: #a80000;
+}
+.custom-label {
+  text-align: right;
+  margin-top: 6px;
+  font-size: 1.1em;
+}
+#book-readed .v-form {
+  border-top: 1px solid black;
+}
+</style>
