@@ -5,7 +5,8 @@ import { createApp } from "vue";
 import { loadFonts } from "./plugins/webfontloader";
 import { createAuth0 } from "@auth0/auth0-vue";
 import Datepicker from '@vuepic/vue-datepicker';
-import '@vuepic/vue-datepicker/dist/main.css'
+import '@vuepic/vue-datepicker/dist/main.css';
+import './assets/general.scss';
 
 loadFonts();
 

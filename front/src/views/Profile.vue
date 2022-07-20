@@ -6,7 +6,7 @@
         <div class="content">
           <div class="content-title">
             <h2>Readed</h2>
-            <v-btn @click="currentModal = 'addBookReaded'" icon>
+            <v-btn @click="currentModal = 'addBookReaded'" class="colored-outline" icon>
               <v-icon>mdi-plus-circle</v-icon>
             </v-btn>
             <span class="clear"></span>
@@ -30,10 +30,10 @@
                 </v-card-text>
                 <v-card-actions>
                   <v-spacer></v-spacer>
-                  <v-btn @click="deleteBR(item)" icon>
+                  <v-btn @click="deleteBR(item)" class="colored-outline" icon>
                         <v-icon> mdi-delete-circle-outline</v-icon>
                       </v-btn>
-                    <v-btn @click="deleteBR(item)" icon>
+                    <v-btn @click="currentModal = 'editBookReaded'" class="colored-outline" icon>
                         <v-icon> mdi-update</v-icon>
                       </v-btn>
                 </v-card-actions>
@@ -51,16 +51,16 @@
             <span class="clear"></span>
           </div>
           <div class="content-body">
-            <p><b>Books readed: </b>{{state.books_readed.length}}</p>
-            <p><b>Books to read: </b>{{state.books_to_read.length}}</p>
-            <p><b>Av. rating: </b>{{state.rating}}</p>
-            <p><b>Pages read: </b>{{state.pages_read}}</p>
+            <p class="custom-label"><b>Books readed: </b>{{state.books_readed.length}}</p>
+            <p class="custom-label"><b>Books to read: </b>{{state.books_to_read.length}}</p>
+            <p class="custom-label"><b>Av. rating: </b>{{state.rating}}</p>
+            <p class="custom-label"><b>Pages read: </b>{{state.pages_read}}</p>
           </div>
         </div>
         <div class="content">
           <div class="content-title">
             <h2>To read</h2>
-            <v-btn @click="currentModal = 'addBookToRead'" icon>
+            <v-btn @click="currentModal = 'addBookToRead'" class="colored-outline" icon>
               <v-icon>mdi-plus-circle</v-icon>
             </v-btn>
             <span class="clear"></span>
@@ -79,9 +79,9 @@
                 </thead>
                 <tbody>
                   <tr v-for="item in state.books_to_read" :key="item.name">
-                    <td style="width: 70%">{{ item.name }}</td>
+                    <td style="width: 70%" class="text-center">{{ item.name }}</td>
                     <td class="text-center">
-                      <v-btn @click="deleteBTR(item)" icon>
+                      <v-btn @click="deleteBTR(item)" class="colored-outline" icon>
                         <v-icon> mdi-delete-circle-outline</v-icon>
                       </v-btn>
                     </td>
@@ -103,6 +103,11 @@
       @closeModal="closeModal"
       @reloadUser="reloadUser"
     ></AddBookReaded>
+    <EditBookReaded
+      :currentModal="currentModal"
+      @closeModal="closeModal"
+      @reloadUser="reloadUser"
+    ></EditBookReaded>
   </v-container>
 </template>
 <script>
@@ -113,12 +118,14 @@ import PrivateAPI from "../services/privateAPI.service";
 // Components
 import AddBookReaded from "../components/AddBookReaded.vue";
 import AddBookToRead from "../components/AddBookToRead.vue";
+import EditBookReaded from "../components/EditBookReaded.vue";
 
 export default {
   name: "cProfile",
   components: {
     AddBookToRead,
     AddBookReaded,
+    EditBookReaded
   },
   methods: {
     closeModal() {
@@ -168,54 +175,3 @@ export default {
   },
 };
 </script>
-<style>
-.content {
-  background: #f8f8f8;
-  border-radius: 6px;
-  padding: 10px 20px;
-  margin-top: 20px;
-}
-.content .content-title {
-  padding: 10px 5px;
-  border-bottom: 1px solid #c0c0c0;
-}
-.content .content-title .v-btn {
-  background: none;
-  color: #a80000;
-  box-shadow: none;
-  margin-top: -8px;
-}
-.non-content {
-  text-align: center;
-  padding: 50px 0;
-  font-style: italic;
-}
-.content .content-title .v-btn {
-  float: right;
-}
-.content .content-title h2 {
-  float: left;
-}
-span.clear {
-  clear: left;
-  display: block;
-}
-.content-table {
-  border-bottom-left-radius: 5px;
-  border-bottom-right-radius: 5px;
-}
-.content-table .v-btn {
-  background: none;
-  color: #a80000;
-  box-shadow: none;
-}
-.content-table tr:hover {
-  background-color: transparent !important;
-}
-.content-body i {
-  color: #a80000;
-}
-.content-body .v-row {
-  padding: 0;
-}
-</style>

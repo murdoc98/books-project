@@ -2,44 +2,13 @@
   <v-dialog v-model="isOpen" persistent content-class="modal">
     <v-card id="book-readed">
       <v-card-title
-        ><p>Book readed</p>
-        <v-btn icon @click="$emit('closeModal')" size="x-small">
+        ><p>Update book readed</p>
+        <v-btn icon @click="$emit('closeModal')" x-small>
           <v-icon> mdi-close-circle-outline</v-icon>
         </v-btn></v-card-title
       >
       <v-card-text>
         <v-row>
-          <v-col cols="9">
-            <v-text-field
-              v-on:keyup.enter="search"
-              v-model="searchText"
-              label="Name of the book"
-              hide-details="auto"
-              :disabled="state.selectedItem"
-            ></v-text-field>
-          </v-col>
-          <v-col cols="3">
-            <v-btn
-              @click="search"
-              block
-              id="search-bar"
-              v-if="!state.selectedItem"
-              class="colored-solid search"
-            >
-              Search&nbsp;
-              <v-icon> mdi-search-web</v-icon>
-            </v-btn>
-            <v-btn
-              @click="clear"
-              block
-              id="search-bar"
-              v-if="state.selectedItem"
-              class="colored-solid search"
-            >
-              Clear&nbsp;
-              <v-icon> mdi-autorenew</v-icon>
-            </v-btn>
-          </v-col>
           <v-col cols="12" v-if="searchLength > 0 && !state.selectedItem">
             <v-table>
               <thead>
@@ -56,7 +25,7 @@
                   <td>{{ item.author_name }}</td>
                   <td>{{ item.publisher }}</td>
                   <td>
-                    <v-btn @click="getItem(item)" size="small" class="colored-solid" block>
+                    <v-btn @click="getItem(item)" size="small" block>
                       Select&nbsp;
                       <v-icon> mdi-search-web</v-icon>
                     </v-btn>
@@ -138,7 +107,7 @@
                   ></v-textarea>
                 </v-col>
                 <v-col cols="12">
-                  <v-btn block @click="postBR()" class="colored-solid search">
+                  <v-btn block @click="postBR()">
                     Save&nbsp;
                     <v-icon>mdi-content-save-outline</v-icon>
                   </v-btn>
@@ -156,9 +125,9 @@ import { ref, toRefs, reactive } from "vue";
 import axios from "axios";
 import Datepicker from "@vuepic/vue-datepicker";
 import "@vuepic/vue-datepicker/dist/main.css";
-import PrivateAPI from "../services/privateAPI.service";
+import PrivateAPI from '../services/privateAPI.service';
 export default {
-  name: "cAddBookReaded",
+  name: "cEditBookReaded",
   components: { Datepicker },
   props: {
     currentModal: { type: String, required: false },
@@ -221,16 +190,16 @@ export default {
       state.book.year = 0;
       state.book.publisher = "";
     };
-    const postBR = async () => {
-      if (state.book.score == "Really good") state.book.score = 5;
-      else if (state.book.score == "Good") state.book.score = 4;
-      else if (state.book.score == "Meh") state.book.score = 3;
-      else if (state.book.score == "Bad") state.book.score = 2;
+    const postBR = async() => {
+      if(state.book.score == 'Really good') state.book.score = 5;
+      else if(state.book.score == 'Good') state.book.score = 4;
+      else if(state.book.score == 'Meh') state.book.score = 3;
+      else if(state.book.score == 'Bad') state.book.score = 2;
       else state.book.score = 1;
       await privateAPI.postBR(state.book);
-      emit("reloadUser");
-      emit("closeModal");
-    };
+      emit('reloadUser');
+      emit('closeModal');
+    }
     return {
       isOpen,
       modal,
@@ -241,25 +210,16 @@ export default {
       getItem,
       clear,
       items,
-      postBR,
+      postBR
     };
   },
   watch: {
     modal(value) {
-      this.isOpen = value == "addBookReaded";
+      this.isOpen = value == "editBookReaded";
       this.state.response = [];
       this.searchText = "";
       this.searchLength = 0;
     },
   },
-};
+}
 </script>
-<style scoped>
-#book-readed .v-card-title p {
-  float: left;
-}
-#book-readed .v-card-title .v-btn {
-  float: right;
-  background: #a80000;
-}
-</style>

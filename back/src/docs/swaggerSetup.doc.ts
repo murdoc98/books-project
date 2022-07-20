@@ -12,7 +12,7 @@ const options = {
       title: 'Book\'s project',
       version: '1.0',
       description:
-        'Api creada para la prueba tecnica',
+        'Books project api',
       license: {
         name: 'MIT',
         url: 'https://spdx.org/licenses/MIT.html'

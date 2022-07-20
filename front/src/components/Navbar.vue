@@ -12,7 +12,7 @@
       <v-icon right dark> mdi-account-circle-outline </v-icon>
       &nbsp;Profile
     </v-btn>
-    <v-btn class="ma-2 white--text" @click="logout" v-if="isAuthenticated">
+    <v-btn class="ma-2 white--text" @click="clogout" v-if="isAuthenticated">
       <v-icon right dark> mdi-logout </v-icon>
       &nbsp;Logout
     </v-btn>
@@ -33,28 +33,16 @@ export default {
         },
       });
     }
+    function clogout() {
+      return logout({returnTo: window.location.origin})
+    }
     return {
       // Data
       isAuthenticated,
       // Methods
       login,
-      logout,
+      clogout,
     };
   },
 };
 </script>
-<style>
-.v-toolbar {
-  background: #730000 !important;
-}
-.v-toolbar__content {
-  padding: 5%;
-  color: white;
-  font-weight: bolder;
-}
-.v-toolbar-title a {
-  color: white;
-  text-decoration: none;
-  font-size: 1.4em;
-}
-</style>

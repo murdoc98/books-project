@@ -5,7 +5,7 @@
         <v-btn
           v-for="e in icons"
           :key="e"
-          class="mx-4 white--text"
+          class="mx-4 colored-solid"
           icon
           :href="e.url"
           target="_blank"
@@ -50,20 +50,3 @@ export default {
   }),
 };
 </script>
-<style>
-.v-footer {
-  flex: none;
-  padding: 0;
-}
-#footer {
-  background: #730000 !important;
-  color: white;
-  border-radius: 0;
-  border-top-left-radius: 10px;
-  border-top-right-radius: 10px;
-}
-#footer .v-btn {
-  color: white;
-  background: #a80000;
-}
-</style>

@@ -17,7 +17,7 @@
             ></v-text-field>
           </v-col>
           <v-col cols="3">
-            <v-btn @click="search" block id='search-bar'>
+            <v-btn @click="search" block class="colored-solid search">
               Search&nbsp;
               <v-icon> mdi-search-web</v-icon>
             </v-btn>
@@ -39,7 +39,7 @@
                   <td>{{ item.publisher.join(', ') }}</td>
                   <td>
 
-                  <v-btn @click="postBTR(item)" size="small" block>
+                  <v-btn @click="postBTR(item)" size="small" class="colored-solid" block>
                     Select&nbsp;
                     <v-icon> mdi-search-web</v-icon>
                   </v-btn>
@@ -119,37 +119,3 @@ export default {
   },
 };
 </script>
-<style>
-.modal {
-  width: 60%;
-}
-#form {
-  overflow: hidden;
-  min-height: 200px;
-}
-.modal .v-card-title {
-  background: #730000;
-  color: white;
-}
-.modal .v-card-text {
-  padding: 0!important;
-}
-.modal .v-row {
-  padding: 20px;
-}
-.modal .v-col {
-  height: auto;
-}
-.modal .v-btn {
-  background: #730000;
-  color: white;
-}
-.v-col #search-bar {
-  margin-top: 10px;
-}
-.v-table td{
-  height: 40px;
-}
-.v-dialog {
-}
-</style>
