@@ -26,4 +26,8 @@ export default class PrivateAPI {
     const response = await this.axios.delete(`/bookreaded/${book._id}`);
     return response.data;
   }
+  async putBR(book) {
+    const response = await this.axios.put(`/bookreaded/${book._id}`, book);
+    return response.data;
+  }
 }

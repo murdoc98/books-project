@@ -150,7 +150,6 @@ export default {
       state.id = _id.substr(_id.length - 5);
       state.books_to_read = books_to_read;
       state.books_readed = books_readed;
-      console.log(books_readed);
       if(books_readed.lenght == 0) state.rating = 0;
       else state.rating = (books_readed.reduce((a, b) => a + b.score, 0) / books_readed.length).toFixed(1);
       state.pages_read = books_readed.reduce((a, b) => a + parseInt(b.totalPages), 0);

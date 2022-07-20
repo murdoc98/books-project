@@ -8,42 +8,13 @@
         </v-btn></v-card-title
       >
       <v-card-text>
-        {{ book }}
         <v-row>
-          <v-col cols="12" v-if="searchLength > 0 && !state.selectedItem">
-            <v-table>
-              <thead>
-                <tr>
-                  <th class="text-center">Title</th>
-                  <th class="text-center">Author</th>
-                  <th class="text-center">Publisher</th>
-                  <th class="text-center">Action</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr v-for="item in state.response" :key="item.title">
-                  <td>{{ item.title }}</td>
-                  <td>{{ item.author_name }}</td>
-                  <td>{{ item.publisher }}</td>
-                  <td>
-                    <v-btn @click="getItem(item)" size="small" block>
-                      Select&nbsp;
-                      <v-icon> mdi-search-web</v-icon>
-                    </v-btn>
-                  </td>
-                </tr>
-              </tbody>
-            </v-table>
-          </v-col>
           <v-col cols="12">
-            <v-form v-if="state.selectedItem">
+            <v-form>
               <v-row>
-                <v-col cols="12">
-                  <h2>Complete the data</h2>
-                </v-col>
                 <v-col cols="6">
                   <v-text-field
-                    v-model="state.book.name"
+                    v-model="book.name"
                     label="Complete title"
                     :disabled="true"
                     hide-details="auto"
@@ -51,7 +22,7 @@
                 </v-col>
                 <v-col cols="6">
                   <v-text-field
-                    v-model="state.book.publisher"
+                    v-model="book.publisher"
                     label="Publisher"
                     :disabled="true"
                     hide-details="auto"
@@ -59,7 +30,7 @@
                 </v-col>
                 <v-col cols="4">
                   <v-text-field
-                    v-model="state.book.pages"
+                    v-model="book.pages"
                     label="Number of pages"
                     :disabled="true"
                     hide-details="auto"
@@ -67,7 +38,7 @@
                 </v-col>
                 <v-col cols="4">
                   <v-text-field
-                    v-model="state.book.year"
+                    v-model="book.year"
                     label="First publish year"
                     :disabled="true"
                     hide-details="auto"
@@ -76,7 +47,7 @@
                 <v-col cols="4">
                   <v-select
                     :items="items"
-                    v-model="state.book.score"
+                    v-model="book.score"
                     label="Score"
                     hide-details="auto"
                     return-object
@@ -87,7 +58,7 @@
                 </v-col>
                 <v-col cols="3">
                   <Datepicker
-                    v-model="state.book.startDate"
+                    v-model="book.startDate"
                     @submit.prevent
                   ></Datepicker>
                 </v-col>
@@ -96,21 +67,22 @@
                 </v-col>
                 <v-col cols="3">
                   <Datepicker
-                    v-model="state.book.endDate"
+                    v-model="book.endDate"
                     @submit.prevent
                   ></Datepicker>
                 </v-col>
                 <v-col cols="12">
                   <v-textarea
                     label="Type here your book's review"
-                    v-model="state.book.review"
+                    v-model="book.review"
                     hide-details="auto"
+                    :disabled="true"
                   ></v-textarea>
                 </v-col>
                 <v-col cols="12">
-                  <v-btn block @click="postBR()">
-                    Save&nbsp;
-                    <v-icon>mdi-content-save-outline</v-icon>
+                  <v-btn block @click="putBR()" class="colored-solid">
+                    Update&nbsp;
+                    <v-icon>mdi-autorenew</v-icon>
                   </v-btn>
                 </v-col>
               </v-row>
@@ -123,7 +95,6 @@
 </template>
 <script>
 import { ref, toRefs, reactive } from "vue";
-import axios from "axios";
 import Datepicker from "@vuepic/vue-datepicker";
 import "@vuepic/vue-datepicker/dist/main.css";
 import PrivateAPI from '../services/privateAPI.service';
@@ -138,81 +109,30 @@ export default {
     const privateAPI = new PrivateAPI();
     const items = ["Really good", "Good", "Meh", "Bad", "Really bad"];
     const isOpen = ref(false);
-    const searchText = ref("");
-    const searchLength = ref(0);
     const state = reactive({
       response: [],
-      selectedItem: false,
-      book: {
-        name: "",
-        pages: 0,
-        year: 0,
-        score: "",
-        publisher: "",
-        startDate: null,
-        endDate: null,
-        review: "",
-      },
     });
     const { currentModal: modal, selectedBook: book } = toRefs(props);
-    const search = async () => {
-      const title = searchText.value.toLowerCase().replace(/ /g, "+");
-      state.response = await getBooks(title);
-    };
-    const getBooks = async (bookName) => {
-      const url = `https://openlibrary.org/search.json?q=${bookName}`;
-      const {
-        data: { docs },
-      } = await axios.get(url, {
-        params: {
-          mode: "eboks",
-          limit: 10,
-        },
-      });
-      docs.forEach((book) => {
-        if (!book.author_name) book.author_name = ["None"];
-        if (!book.publisher) book.publisher = ["None"];
-        book.author_name = book.author_name.slice(0, 1).join(", ");
-        book.publisher = book.publisher.slice(0, 1).join(", ");
-      });
-      searchLength.value = docs.length;
-      return docs;
-    };
-    const getItem = (book) => {
-      state.selectedItem = true;
-      state.book.name = book.title;
-      state.book.pages = book.number_of_pages_median || 0;
-      state.book.year = book.first_publish_year || 2005;
-      state.book.publisher = book.publisher;
-    };
     const clear = () => {
-      state.selectedItem = false;
-      state.book.name = "";
-      state.book.pages = 0;
-      state.book.year = 0;
-      state.book.publisher = "";
     };
-    const postBR = async() => {
-      if(state.book.score == 'Really good') state.book.score = 5;
-      else if(state.book.score == 'Good') state.book.score = 4;
-      else if(state.book.score == 'Meh') state.book.score = 3;
-      else if(state.book.score == 'Bad') state.book.score = 2;
-      else state.book.score = 1;
-      await privateAPI.postBR(state.book);
+    const putBR = async() => {
+      console.log(book.value.score);
+      if(book.value.score == 'Really good') book.value.score = 5;
+      else if(book.value.score == 'Good') book.value.score = 4;
+      else if(book.value.score == 'Meh') book.value.score = 3;
+      else if(book.value.score == 'Bad') book.value.score = 2;
+      else book.value.score = 1;
+      await privateAPI.putBR(book.value);
       emit('reloadUser');
       emit('closeModal');
     }
     return {
       isOpen,
       modal,
-      search,
-      searchText,
-      searchLength,
       state,
-      getItem,
       clear,
       items,
-      postBR,
+      putBR,
       book
     };
   },
