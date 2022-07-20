@@ -7,6 +7,7 @@ import postBookToRead from './controllers/postBookToRead.controller';
 import deleteBookToRead from './controllers/deleteBookToRead.controller';
 import postBookReaded from './controllers/postBookReaded.controller';
 import deleteBookReaded from './controllers/deleteBookReaded.controller';
+import updateBookReaded from './controllers/updateBookReaded.controller';
 
 const router = Router();
 
@@ -25,6 +26,7 @@ router.post('/bookToRead', auth0, postBookToRead);
 router.delete('/bookToRead/:id', auth0, deleteBookToRead);
 router.post('/bookreaded', auth0, postBookReaded);
 router.delete('/bookreaded/:id', auth0, deleteBookReaded);
+router.put('/bookreaded/:id', auth0, updateBookReaded);
 
 // Catch non implemented routes
 router.all('*', (req: Request, res: Response) => {

@@ -33,7 +33,7 @@
                   <v-btn @click="deleteBR(item)" class="colored-outline" icon>
                         <v-icon> mdi-delete-circle-outline</v-icon>
                       </v-btn>
-                    <v-btn @click="currentModal = 'editBookReaded'" class="colored-outline" icon>
+                    <v-btn @click="currentModal = 'editBookReaded'; state.selectedBook=item" class="colored-outline" icon>
                         <v-icon> mdi-update</v-icon>
                       </v-btn>
                 </v-card-actions>
@@ -105,6 +105,7 @@
     ></AddBookReaded>
     <EditBookReaded
       :currentModal="currentModal"
+      :selectedBook="state.selectedBook"
       @closeModal="closeModal"
       @reloadUser="reloadUser"
     ></EditBookReaded>
@@ -160,7 +161,8 @@ export default {
       books_to_read: [],
       books_readed: [],
       rating: 0,
-      pages_read: 0
+      pages_read: 0,
+      selectedBook: {}
     });
     onMounted(async () => {
       await reloadUser();

@@ -3,7 +3,7 @@
     <v-card id="book-readed">
       <v-card-title
         ><p>Book readed</p>
-        <v-btn icon @click="$emit('closeModal')" size="x-small">
+        <v-btn icon @click="$emit('closeModal')" class="colored-solid" size="x-small">
           <v-icon> mdi-close-circle-outline</v-icon>
         </v-btn></v-card-title
       >
@@ -254,12 +254,3 @@ export default {
   },
 };
 </script>
-<style scoped>
-#book-readed .v-card-title p {
-  float: left;
-}
-#book-readed .v-card-title .v-btn {
-  float: right;
-  background: #a80000;
-}
-</style>

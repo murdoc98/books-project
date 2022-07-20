@@ -1,13 +1,14 @@
 <template>
   <v-dialog v-model="isOpen" persistent content-class="modal">
-    <v-card id="book-readed">
+    <v-card>
       <v-card-title
         ><p>Update book readed</p>
-        <v-btn icon @click="$emit('closeModal')" x-small>
+        <v-btn icon @click="$emit('closeModal')" class="colored-solid" size="x-small">
           <v-icon> mdi-close-circle-outline</v-icon>
         </v-btn></v-card-title
       >
       <v-card-text>
+        {{ book }}
         <v-row>
           <v-col cols="12" v-if="searchLength > 0 && !state.selectedItem">
             <v-table>
@@ -131,6 +132,7 @@ export default {
   components: { Datepicker },
   props: {
     currentModal: { type: String, required: false },
+    selectedBook: { type: Object, required: true }
   },
   setup(props, { emit }) {
     const privateAPI = new PrivateAPI();
@@ -152,7 +154,7 @@ export default {
         review: "",
       },
     });
-    const { currentModal: modal } = toRefs(props);
+    const { currentModal: modal, selectedBook: book } = toRefs(props);
     const search = async () => {
       const title = searchText.value.toLowerCase().replace(/ /g, "+");
       state.response = await getBooks(title);
@@ -210,7 +212,8 @@ export default {
       getItem,
       clear,
       items,
-      postBR
+      postBR,
+      book
     };
   },
   watch: {
