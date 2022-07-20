@@ -30,7 +30,7 @@
                 </v-card-text>
                 <v-card-actions>
                   <v-spacer></v-spacer>
-                  <v-btn @click="deleteBR(item)" class="colored-outline" icon>
+                  <v-btn @click="currentModal = 'confirmDelete'; state.selectedBook=item" class="colored-outline" icon>
                         <v-icon> mdi-delete-circle-outline</v-icon>
                       </v-btn>
                     <v-btn @click="currentModal = 'editBookReaded'; state.selectedBook=item" class="colored-outline" icon>
@@ -81,7 +81,7 @@
                   <tr v-for="item in state.books_to_read" :key="item.name">
                     <td style="width: 70%" class="text-center">{{ item.name }}</td>
                     <td class="text-center">
-                      <v-btn @click="deleteBTR(item)" class="colored-outline" icon>
+                      <v-btn @click="currentModal = 'confirmDelete'; state.selectedBook=item" class="colored-outline" icon>
                         <v-icon> mdi-delete-circle-outline</v-icon>
                       </v-btn>
                     </td>
@@ -109,6 +109,12 @@
       @closeModal="closeModal"
       @reloadUser="reloadUser"
     ></EditBookReaded>
+    <ConfirmDelete
+      :currentModal="currentModal"
+      :selectedBook="state.selectedBook"
+      @closeModal="closeModal"
+      @reloadUser="reloadUser"
+    ></ConfirmDelete>
   </v-container>
 </template>
 <script>
@@ -120,13 +126,15 @@ import PrivateAPI from "../services/privateAPI.service";
 import AddBookReaded from "../components/AddBookReaded.vue";
 import AddBookToRead from "../components/AddBookToRead.vue";
 import EditBookReaded from "../components/EditBookReaded.vue";
+import ConfirmDelete from '../components/ConfirmDelete.vue';
 
 export default {
   name: "cProfile",
   components: {
     AddBookToRead,
     AddBookReaded,
-    EditBookReaded
+    EditBookReaded,
+    ConfirmDelete
   },
   methods: {
     closeModal() {
@@ -136,14 +144,6 @@ export default {
   setup() {
     const privateAPI = new PrivateAPI();
     const currentModal = ref("disabled");
-    const deleteBTR = async (item) => {
-      await privateAPI.deleteBTR(item);
-      await reloadUser();
-    };
-    const deleteBR = async(item) => {
-      await privateAPI.deleteBR(item);
-      await reloadUser();
-    }
     const reloadUser = async () => {
       const { _id, books_readed, books_to_read } =
         await privateAPI.getCurrentUser();
@@ -169,8 +169,6 @@ export default {
     return {
       state,
       currentModal,
-      deleteBTR,
-      deleteBR,
       reloadUser,
     };
   },
