@@ -1,5 +1,5 @@
-import mongoose, { Connection } from "mongoose";
-import logger from "logger";
+import mongoose, { Connection } from 'mongoose';
+import logger from './logger';
 
 const _ = () => new Promise((resolve, reject) => {
   mongoose.connect(`mongodb://${process.env.DB_HOST}/${process.env.DB_NAME}`);

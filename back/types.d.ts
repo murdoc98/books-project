@@ -7,5 +7,8 @@ declare namespace Express {
         sub: string
       }
     }
+    oidc: {
+      user: any
+    }
   }
 }

@@ -25,6 +25,7 @@
               id="search-bar"
               v-if="!state.selectedItem"
               class="colored-solid search"
+              :loading="loading"
             >
               Search&nbsp;
               <v-icon> mdi-search-web</v-icon>
@@ -167,6 +168,7 @@ export default {
     const privateAPI = new PrivateAPI();
     const items = ["Really good", "Good", "Meh", "Bad", "Really bad"];
     const isOpen = ref(false);
+    const loading = ref(false);
     const searchText = ref("");
     const searchLength = ref(0);
     const state = reactive({
@@ -190,6 +192,7 @@ export default {
     };
     const getBooks = async (bookName) => {
       const url = `https://openlibrary.org/search.json?q=${bookName}`;
+      loading.value = true;
       const {
         data: { docs },
       } = await axios.get(url, {
@@ -205,6 +208,7 @@ export default {
         book.publisher = book.publisher.slice(0, 1).join(", ");
       });
       searchLength.value = docs.length;
+      loading.value = false;
       return docs;
     };
     const getItem = (book) => {
@@ -242,6 +246,7 @@ export default {
       clear,
       items,
       postBR,
+      loading
     };
   },
   watch: {

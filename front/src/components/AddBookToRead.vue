@@ -17,7 +17,7 @@
             ></v-text-field>
           </v-col>
           <v-col cols="3">
-            <v-btn @click="search" block class="colored-solid search">
+            <v-btn @click="search" block class="colored-solid search" :loading="loading">
               Search&nbsp;
               <v-icon> mdi-search-web</v-icon>
             </v-btn>
@@ -65,6 +65,7 @@ export default {
   setup(props, { emit }) {
     const privateAPI = new PrivateAPI();
     const isOpen = ref(false);
+    const loading = ref(false);
     const searchText = ref('');
     const searchLength = ref(0);
     const state = reactive({
@@ -77,6 +78,8 @@ export default {
     };
     const getBooks = async (bookName) => {
       const url = `https://openlibrary.org/search.json?q=${bookName}`;
+      loading.value = true;
+      console.log(loading.value);
       const {
         data: { docs },
       } = await axios.get(url, {
@@ -92,6 +95,7 @@ export default {
         book.publisher = book.publisher.slice(0, 1);
       });
       searchLength.value = docs.length;
+      loading.value = false;
       return docs;
     };
     const postBTR = async(book) => {
@@ -106,7 +110,8 @@ export default {
       searchText,
       searchLength,
       state,
-      postBTR
+      postBTR,
+      loading
     };
   },
   watch: {

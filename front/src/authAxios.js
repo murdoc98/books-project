@@ -5,7 +5,7 @@ export default function loadConfig() {
   const { getAccessTokenSilently } = useAuth0();
 
   const instance = axios.create({
-    baseURL: "http://localhost:1025/api",
+    baseURL: "https://evaio.mx/api",
     timeout: 2000,
   });
   instance.interceptors.request.use(

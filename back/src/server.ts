@@ -4,9 +4,9 @@ import helmet from 'helmet';
 import cors from 'cors';
 import morgan from 'morgan';
 
-import swaggerSetup from 'docs/swaggerSetup.doc';
-import morganMiddleware from 'middlewares/morgan.middleware';
-import routes from 'routes';
+import swaggerSetup from './docs/swaggerSetup.doc';
+import morganMiddleware from './middlewares/morgan.middleware';
+import routes from './routes';
 
 export default function createServer(): express.Application {
   dotenv.config();

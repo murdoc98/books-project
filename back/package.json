@@ -4,14 +4,12 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "NODE_PATH=./dist node dist/app.js",
-    "prod_seed": "NODE_PATH=./dist node dist/dbSeed.js",
+    "start": "node dist/app.js",
     "build": "tsc -p . --excludeDirectories ./test",
     "lint": "tsc --noEmit && eslint '*/**/*.{js,ts}' --quiet --fix",
     "staticdev": "ts-node -r tsconfig-paths/register src/app.ts",
     "dev": "nodemon",
-    "test": "NODE_ENV=test mocha --check-leaks -r tsconfig-paths/register -r ts-node/register  \"test/**/*.spec.ts\" --timeout 3000",
-    "seed": "ts-node -r tsconfig-paths/register src/dbSeed.ts"
+    "test": "NODE_ENV=test mocha --check-leaks -r tsconfig-paths/register -r ts-node/register  \"test/**/*.spec.ts\" --timeout 3000"
   },
   "keywords": [],
   "author": "",
